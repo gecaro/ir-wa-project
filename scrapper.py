@@ -60,6 +60,13 @@ class MyStreamListener(StreamListener):
         
 
 def authenticate(path_to_credentials):
+    """
+        Function used to authenticate the user.
+        Args:
+            - the path to the file where the credentials are stored
+        returns:
+            The authentication object, and the api connection binded to it
+    """
     credentials = sys.argv[1]
     # open credentials file and set them as variables
     with open(credentials) as f:
@@ -75,6 +82,14 @@ def authenticate(path_to_credentials):
     return(auth, api)
 
 def stream_to_file(keywords, api, output_filename='data/out.json', limit=10000):
+    """
+        This functions creates (or writes, in case it exists) in a file with streamed tweets.
+        Args:
+            - Keywords: The keywords to look for
+            - Api, the api connection object
+            - Output_filename: the name of the file in which to write to
+            - limit: how many tweets we'd like to retrive at max (default 10k because twitter sometimes bans me for no reason)
+    """
     l = MyStreamListener(api, output_filename, limit)
     # here we recall the Stream Class from Tweepy to input the authentication info and our personalized listener 
     stream = Stream(auth=api.auth, listener=l)

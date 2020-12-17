@@ -10,6 +10,9 @@ jupyterlab = "*"
 pandas = "*"
 numpy = "*"
 matplotlib = "*"
+progress = "*"
+wordcloud = "*"
+sklearn = "*"
 
 [dev-packages]
 
