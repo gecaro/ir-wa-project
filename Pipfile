@@ -13,6 +13,8 @@ matplotlib = "*"
 progress = "*"
 wordcloud = "*"
 sklearn = "*"
+gensim = "*"
+seaborn = "*"
 
 [dev-packages]
 

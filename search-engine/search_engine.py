@@ -10,6 +10,7 @@ from progress.bar import Bar
 # i need to do that in my machine in order for the stopwords to download
 import nltk
 import ssl
+import re
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -45,7 +46,7 @@ def text_to_id(tweets_dict):
         text_to_id_dict[key] = tweets_dict[key]["text"]
     return text_to_id_dict
 
-def getTerms(text):
+def getTerms(text, tolist=True):
     """
     Preprocess the tweet text removing stop words, stemming,
     transforming in lowercase and return the tokens of the text.
@@ -56,17 +57,24 @@ def getTerms(text):
     Returns:
     line - a list of tokens corresponding to the input text after the preprocessing
     """
-        
+    mywords = ["https", "youtube", "@youtub", "co", "youtub"]
     stemming = PorterStemmer()
     stops = set(stopwords.words("english"))
     # Transform in lowercase
-    text = text.lower() 
+    text = text.lower()
+    # delete urls and Via @ (for exameple via @youtube makes a lot of noise):
+    text = re.sub(r'http\S+', '', text)
+    text = re.sub(r'via @\S+', '', text)
     #Tokenize the text to get a list of terms
     text =  text.split() 
     # eliminate the stopwords 
-    text = [token for token in text if token not in stopwords.words('english')]  
+    text = [token for token in text if token not in stopwords.words('english')]
     # stem words
     text = [stemming.stem(token) for token in text]
+    # remove noise words found after visual qualification
+    text = [token for token in text if token not in mywords]
+    if not tolist:
+        text = ' '.join(text)
     return text
 
 def generate_tweet_scores(data):
@@ -268,7 +276,7 @@ def search(query, index, idf, tf, rt, likes, score):
     ranked_docs = rankDocuments(query, docs, index, idf, tf, rt, likes, score)   
     return ranked_docs
 
-def perform_query(tweets_dict, index, tf, idf, rt, likes, score):
+def perform_query(tweets_dict, index, tf, idf, rt, likes, score, get_input=True, query=None):
     """
     This functions performs a query getting diven an input
         tweets_dict -- dictionary of information of tweets by tweet id
@@ -279,13 +287,16 @@ def perform_query(tweets_dict, index, tf, idf, rt, likes, score):
         rt -- dict pointing index to rt score
         likes -- dict pointing index to fav score
         score -- The type of score "1" for tf-idf| "2" for custom
+        input -- wether we pass the query by input
+        query -- the query to perform
     
     Returns:
         - The query
         - List of ranked documents
     """
     print("Insert your query:\n")
-    query = input()
+    if get_input:
+        query = input()
     ranked_docs = search(query, index, idf, tf, rt, likes, score) 
     return query, ranked_docs
 
