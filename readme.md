@@ -4,23 +4,23 @@
 
 ___
 
-**About this repository: **
+**About this repository:**
 
 This repository contains the work done for the final project for IR-WA subject at UPF. An overview of the different folders is detailed:
 
 * **data:** This folder contains the data collected plus subsets created in order to test.
-* **notebooks: ** The notebooks required for the questions. 
-* **search engine: ** python script to be run for task 2, detailed below.
-* **tools: **bash scripts to perform basic tasks such as correctly format json documents
+* **notebooks:** The notebooks required for the questions. 
+* **search engine:** python script to be run for task 2, detailed below.
+* **tools:** bash scripts to perform basic tasks such as correctly format json documents
 
 ____
 
 **How to use:**
 
 1. Clone the repository
-2. Run `pipenv install` for installing the dependencies in Pipenv file (or install them manually, but personally I don't like to mess with python's local dependencies )
+2. Run `pipenv install` for installing the dependencies in Pipenv file (or install them manually, but personally I don't like to mess with python's local dependencies )
 3. Run pipenv shell to activate the environment or alternatively:
-   1. Run `pipenv run [any_file.py] [arg1] [arg2] [argN]` 
+   1. Run `pipenv run [any_file.py] [arg1] [arg2] [argN]` 
    2. For running the notebooks simply `pipenv run python -m "notebook"`
 
 ____
@@ -29,11 +29,11 @@ ____
 For the data collection, we created a simple script called `scrapper.py`. As Twitter was giving certain errors with large ammounts of collected tweets per run for the same api connection, we decided to run batches of 10k tweets per run, using a bash script to launch the scrapper every time it finished, until we got the desired ammounts of tweets. Finally the dataset collected contains:
 
 * **Entries:** 171018 entries.
-* **Original tweets: **58960
-* **Retweets: **112058
-* **Unique users: ** 130087
-* **Unique hashtags: **8046
-* **Hashtags written (not unique): **32839
+* **Original tweets:** 58960
+* **Retweets:** 112058
+* **Unique users:** 130087
+* **Unique hashtags:** 8046
+* **Hashtags written (not unique):** 32839
 
 The data was collected between Dec 9 and Dec 10. 
 
@@ -57,7 +57,7 @@ Where the arguments follow:
 The pre-processing strategy is the same followed in the seminar lectures, as can be seen in the code:
 
 ```python
-		stemming = PorterStemmer()
+    stemming = PorterStemmer()
     stops = set(stopwords.words("english"))
     # Transform in lowercase
     text = text.lower() 
@@ -94,6 +94,5 @@ The fact that we decided to give more weight to retweets than likes is because r
 
 ![Captura de Pantalla 2020-12-17 a les 23.33.45](images/tf-idf-search.png)
 
-![Captura de Pantalla 2020-12-17 a les 23.34.25](/Users/gerardcampsromaguera/Documents/uni/ir-wa-project/images/custom-search.png)
 
 The drawbacks of using this method are some. For instance, the search engine will for sure return most liked/retweeted contents even if they are little relevant to the query in terms of words even if we're mesauring cosine similarity with term frequencies. Also, of course, when using as a measure popularity, most viral content will be retrieved, in real life, this means that individuals with better content are not being shown because of the fact that they might not have vitality. 
